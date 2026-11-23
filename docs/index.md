@@ -25,8 +25,7 @@ parameters, errors, r_squared, figure = fitT1(data[0], data[1])
 ```
 
 Functions are provided as-is. Their names and arguments follow the original
-helpers from `quick.helper`. The grouped implementation modules are private;
-`utils` is the public API.
+helpers from `quick.helper`. Import the public API directly from `utils`.
 
 See the [API reference](api.md) for function signatures, parameters, return
 values, and examples.

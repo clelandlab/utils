@@ -9,9 +9,7 @@ from utils import Saver, Sweep, fitT1
 Use NumPy arrays for numerical analysis and fitting inputs. Unless stated
 otherwise, functions retain the signatures and calculations from `quick.helper`.
 
-## YAML and CSV data
-
-### print_yaml
+## print_yaml
 
 ```python
 print_yaml(data)
@@ -20,7 +18,7 @@ print_yaml(data)
 Print `data` as YAML using `yaml.dump`. Returns `None`.
 NumPy arrays are serialized as sequences and NumPy scalars as Python scalars.
 
-### load_yaml
+## load_yaml
 
 ```python
 load_yaml(path)
@@ -29,7 +27,7 @@ load_yaml(path)
 Read a YAML file at `path` with `yaml.safe_load`. Returns the decoded Python
 object, such as a dictionary, list, or scalar; an empty file returns `None`.
 
-### save_yaml
+## save_yaml
 
 ```python
 save_yaml(path, data)
@@ -39,7 +37,7 @@ Serialize `data` with `yaml.dump` and write it to `path`, overwriting an existin
 file. Returns the YAML text. The containing directory must already exist.
 NumPy arrays and scalars use the same serialization as `print_yaml`.
 
-### load_data
+## load_data
 
 ```python
 load_data(*paths)
@@ -66,7 +64,7 @@ with TemporaryDirectory() as directory:
     data = load_data(path / "data.csv")
 ```
 
-### Saver
+## Saver
 
 ```python
 Saver(title, path, indep_params=[], dep_params=[], params={})
@@ -84,7 +82,7 @@ Construction immediately writes both files. Names have the form
 files matching that pattern. The instance's `file_name` attribute contains the
 full filename without an extension.
 
-#### Saver.write_data
+## Saver.write_data
 
 ```python
 saver.write_data(data)
@@ -95,7 +93,7 @@ and `%.9e` formatting. Supply a two-dimensional array or sequence of rows whose
 columns follow the independent parameters, then dependent parameters.
 Returns `None`. This method does not update the YAML metadata.
 
-#### Saver.write_yml
+## Saver.write_yml
 
 ```python
 saver.write_yml()
@@ -120,9 +118,7 @@ with TemporaryDirectory() as directory:
     saver.write_yml()
 ```
 
-## Parameter sweeps
-
-### Sweep
+## Sweep
 
 ```python
 Sweep(config, sweepConfig, random=False, progressBar=True)
@@ -154,7 +150,7 @@ values = {"frequency": [100, 200], "pulse": {"amplitude": [0.1, 0.2]}}
 steps = [deepcopy(step) for step in Sweep(config, values, progressBar=False)]
 ```
 
-### feistel_network
+## feistel_network
 
 ```python
 feistel_network(i, N, seed)
@@ -164,7 +160,7 @@ Return the pseudo-randomly permuted index for position `i` in a range of size
 `N`. Use integer inputs with `N > 0`. The result is in `range(N)`; the same
 `N` and `seed` define a repeatable permutation. Input `i` is reduced modulo `N`.
 
-### nested_get
+## nested_get
 
 ```python
 nested_get(d, key)
@@ -175,9 +171,7 @@ For example, `nested_get({"a": {"b": 3}}, ["a", "b"])` returns `3`.
 An empty key sequence returns `d` itself. Missing keys raise the underlying
 dictionary error.
 
-## Gain and signal analysis
-
-### dB2gain
+## dB2gain
 
 ```python
 dB2gain(dB, ref_gain=1, ref_dB=None)
@@ -188,7 +182,7 @@ Convert decibels to amplitude gain. Returns
 ignored and the result is `10 ** ((dB + ref_dB) / 20)`.
 Accepts a scalar or NumPy array.
 
-### gain2dB
+## gain2dB
 
 ```python
 gain2dB(gain, ref_gain=1, ref_dB=None)
@@ -199,7 +193,25 @@ Convert positive amplitude gain to decibels. Returns
 `ref_gain` is ignored and the result is `20 * numpy.log10(gain) - ref_dB`.
 Accepts a scalar or NumPy array.
 
-### symmetryCenter
+## π
+
+```python
+from utils import π
+```
+
+The constant `numpy.pi`, also used by the fitting helpers.
+
+## estimateOmega
+
+```python
+estimateOmega(x, y)
+```
+
+Estimate angular frequency from the largest FFT component, useful as an initial
+guess for `fitT2`. Supply equal-length one-dimensional NumPy arrays with evenly
+spaced `x` and nonconstant `y`. Returns angular frequency in radians per unit of `x`.
+
+## symmetryCenter
 
 ```python
 symmetryCenter(x, y, it=3)
@@ -210,17 +222,7 @@ Estimate a signal's symmetry center using iterative Fourier correlation.
 values are preferred. `it` controls the iteration count. Returns an interpolated
 position in the units of `x`, which need not be an existing sample position.
 
-### estimateOmega
-
-```python
-estimateOmega(x, y)
-```
-
-Estimate angular frequency from the largest FFT component. Supply equal-length
-one-dimensional NumPy arrays with evenly spaced `x` and nonconstant `y`.
-Returns angular frequency in radians per unit of `x`.
-
-### iq_scatter
+## iq_scatter
 
 ```python
 iq_scatter(S0s, S1s, c0=None, c1=None, plot=True)
@@ -241,21 +243,7 @@ Returns `(phase, threshold, visibility, Fg, Fe, c0, c1, fig)`:
 - `fig`: Matplotlib figure with IQ scatter and projected histograms, or `None`
   when `plot=False`.
 
-### π
-
-```python
-from utils import π
-```
-
-The constant `numpy.pi`, also used by the signal and fitting helpers.
-
-## Curve fitting
-
-All fitting functions return `(p, perr, r2, fig)`: fitted parameters, estimated
-parameter errors, the coefficient of determination, and a Matplotlib figure.
-`r2` is a fraction, not a percentage. `plot=False` returns `None` for `fig`.
-
-### fitT1
+## fitT1
 
 ```python
 fitT1(T, S, plot=True)
@@ -264,6 +252,9 @@ fitT1(T, S, plot=True)
 Fit `S0 * exp(-T / T1) + C` to equal-length one-dimensional NumPy arrays `T`
 (delay) and `S` (signal). Parameters and errors are ordered `[S0, T1, C]`.
 `T1` has the same units as `T`; plot annotations assume microseconds.
+
+Returns `(p, perr, r2, fig)`: fitted parameters, estimated parameter errors,
+R-squared as a fraction, and a Matplotlib figure (`None` when `plot=False`).
 
 ```python
 import numpy as np
@@ -274,7 +265,7 @@ S = 0.8 * np.exp(-T / 2.0) + 0.1
 p, perr, r2, fig = fitT1(T, S, plot=False)
 ```
 
-### fitT2
+## fitT2
 
 ```python
 fitT2(T, S, omega=2*π, T2=20.0, plot=True)
@@ -285,7 +276,10 @@ Fit `S0 * exp(-T / T2) * cos(omega * T) + C` to one-dimensional NumPy arrays.
 `[S0, T2, omega, C]`. Use consistent delay and angular-frequency units;
 plot annotations assume microseconds and radians per microsecond.
 
-### fitResonator
+Returns `(p, perr, r2, fig)`: fitted parameters, estimated parameter errors,
+R-squared as a fraction, and a Matplotlib figure (`None` when `plot=False`).
+
+## fitResonator
 
 ```python
 fitResonator(F, S, fit="circle", p0=[None, None, None, None], plot=True,
@@ -310,9 +304,10 @@ quality factors are made positive. `fr` uses the units of `F`; plots label
 frequency in MHz. `r2` is computed from complex inverse-transmission residuals
 for every fit mode.
 
-## Expression evaluation and retries
+Returns `(p, perr, r2, fig)`: fitted parameters, estimated parameter errors,
+R-squared as a fraction, and a Matplotlib figure (`None` when `plot=False`).
 
-### evalStr
+## evalStr
 
 ```python
 evalStr(s, var, _var=None)
@@ -328,7 +323,7 @@ from utils import evalStr
 text = evalStr("{value} + 1 = {value + 1}", {"value": 3})
 ```
 
-### safe_wrap
+## safe_wrap
 
 ```python
 safe_wrap(retry=2, timeout=300)
