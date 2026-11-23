@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "clelandlab-utils"
+version = "0.1.0"
+description = "Utility Functions"
+readme = "README.md"
+requires-python = ">=3.13,<4"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{name = "Cleland Lab"}]
+dependencies = [
+    "numpy",
+    "scipy",
+    "matplotlib",
+    "PyYAML",
+    "tqdm",
+    "func_timeout",
+]
+
+[project.urls]
+Documentation = "https://clelandlab-utils.readthedocs.io/en/latest/"
+Source = "https://github.com/clelandlab/utils"
+Tracker = "https://github.com/clelandlab/utils/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["utils*"]

@@ -1,0 +1,11 @@
+site_name: Cleland Lab utils
+site_description: Utility functions for data saving, parameter sweeps, and analysis.
+site_url: https://clelandlab-utils.readthedocs.io/en/latest/
+repo_url: https://github.com/clelandlab/utils
+
+theme:
+  name: readthedocs
+
+nav:
+  - Get Started: index.md
+  - API Reference: api.md
