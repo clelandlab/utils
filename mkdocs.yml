@@ -4,7 +4,19 @@ site_url: https://clelandlab-utils.readthedocs.io/en/latest/
 repo_url: https://github.com/clelandlab/utils
 
 theme:
-  name: readthedocs
+  name: material
+  features:
+    - content.code.copy
+    - navigation.expand
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
 
 nav:
   - Get Started: index.md
